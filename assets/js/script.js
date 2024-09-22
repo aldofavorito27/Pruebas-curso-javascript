@@ -1,10 +1,14 @@
 let listaNombresGastos = [];
 let listaValoresGastos = [];
 let listaDescripcionGastos = [];
+let enModoEdicion = false; // Variable indica si se está editando un gasto
 
 
 function clickBoton(){
-
+    if (enModoEdicion) {
+        alert('Por favor complete la edición antes de agregar un nuevo gasto.');
+        return; // Detiene ejecucion si esta en modo Reemplazar
+    }    
     let nombreGasto = document.getElementById('nombreGasto').value;
     let valorGasto = Number(document.getElementById('valorGasto').value);
     let descripcionGasto = document.getElementById('descripcionGasto').value; 
@@ -13,27 +17,34 @@ function clickBoton(){
     
     // ** Desafio 1: Da un mensaje de advertencia si el valor ingresado es mayor a 150
     
-    if (valorNumericoGasto > 150){
-        if (confirm("El Gasto es considerablemente alto. Estás seguro de Agregar este elemento?")) {
-            // Acción a realizar si se confirma
-        
-
-        actualizarListaGastos();
-         
-    //console.log(nombreGasto);
-    //console.log(valorGasto);
+    if (valorNumericoGasto >= 150){
+        if (confirm("El Gasto es considerablemente alto. Estás seguro de agregar este gasto?")) {
+        // Acción a realizar si se confirma
         listaNombresGastos.push(nombreGasto);
         listaValoresGastos.push(valorGasto);
         listaDescripcionGastos.push(descripcionGasto); 
+    
+    
+        //alert('click del usuario');
+        actualizarListaGastos();
+        }
+
+    } else if (valorNumericoGasto < 150) {
+         
+    //console.log(nombreGasto);
+    //console.log(valorGasto);
+    listaNombresGastos.push(nombreGasto);
+    listaValoresGastos.push(valorGasto);
+    listaDescripcionGastos.push(descripcionGasto); 
 
 
-        console.log(listaNombresGastos);
-        console.log(listaValoresGastos);
+    console.log(listaNombresGastos);
+    console.log(listaValoresGastos);
 
 
     //alert('click del usuario');
-        actualizarListaGastos();
-        }  
+    actualizarListaGastos();
+         
     }
 }
 
@@ -49,7 +60,7 @@ function actualizarListaGastos () {
         //console.log(elemento);
         //console.log(posicion);
             htmlLista +=  `<li>${elemento} - - ${valorGasto} $ USD  - -   ${descripcionGasto} 
-                        <button onclick="modificarGastos(${posicion}, this);">Modificar</button>
+                        <button onclick="modificarGastos(${posicion}, this);">Actualizar</button>
                         <button onclick="eliminarGastos(${posicion});">Eliminar</button>
                             </li>`;
             totalGastos += Number(valorGasto);
@@ -80,6 +91,7 @@ function eliminarGastos(posicion){
 
 function modificarGastos(posicion, boton) {
 
+    enModoEdicion = true; // Cambia el estado a modo de ediciOn
 
     document.getElementById('nombreGasto').value = listaNombresGastos[posicion];
     document.getElementById('valorGasto').value = listaValoresGastos[posicion];
@@ -87,7 +99,7 @@ function modificarGastos(posicion, boton) {
 
 
     // Cambia el texto del botón a "Guardar Cambios"
-    boton.innerText = 'Guardarlos';
+    boton.innerText = 'Guardar Cambio';
 
 
     boton.onclick = function() {
@@ -103,9 +115,10 @@ function modificarGastos(posicion, boton) {
         actualizarListaGastos();
         
         // Restaura el texto del botOn a "Reemplazar" 
-        boton.innerText = 'Modificar';
+        boton.innerText = 'Actualizar';
         boton.onclick = function() {
             modificarGastos(posicion, boton);
         };
+        enModoEdicion = false; // Cambia el estado de vuelta a falso
     };
 }
