@@ -1,21 +1,15 @@
 let listaNombresGastos = [];
 let listaValoresGastos = [];
 let listaDescripcionGastos = [];
-let enModoEdicion = false; // Variable indica si se está editando un gasto
 
 
-function clickBoton(){
-    if (enModoEdicion) {
-        alert('Por favor complete la edición antes de agregar un nuevo gasto.');
-        return; // Detiene ejecucion si esta en modo Reemplazar
-    }    
+function clickBoton(){    
     let nombreGasto = document.getElementById('nombreGasto').value;
     let valorGasto = Number(document.getElementById('valorGasto').value);
     let descripcionGasto = document.getElementById('descripcionGasto').value; 
     console.log(descripcionGasto)
     let valorNumericoGasto = Number(valorGasto);
-    
-    // ** Desafio 1: Da un mensaje de advertencia si el valor ingresado es mayor a 150
+
     
     if (valorNumericoGasto >= 150){
         if (confirm("El Gasto es considerablemente alto. Estás seguro de agregar este gasto?")) {
@@ -90,9 +84,6 @@ function eliminarGastos(posicion){
 }
 
 function modificarGastos(posicion, boton) {
-
-    enModoEdicion = true; // Cambia el estado a modo de ediciOn
-
     document.getElementById('nombreGasto').value = listaNombresGastos[posicion];
     document.getElementById('valorGasto').value = listaValoresGastos[posicion];
     document.getElementById('descripcionGasto').value = listaDescripcionGastos[posicion];
@@ -119,6 +110,5 @@ function modificarGastos(posicion, boton) {
         boton.onclick = function() {
             modificarGastos(posicion, boton);
         };
-        enModoEdicion = false; // Cambia el estado de vuelta a falso
     };
 }
